@@ -2,7 +2,7 @@
 
 . ../common
 
-cat<<xEOF
+cat<<EOF
 
 browser: 
   $proxy_root
@@ -10,7 +10,11 @@ browser:
 
 curl:
 
-    for m in GET POST PUT OPTIONS HEAD DELETE PATCH; do echo \$m; curl -H "authorization: Bearer $jwt" -X \$m "$proxy_root/logout"; echo ; done
+for m in GET POST PUT OPTIONS HEAD DELETE PATCH; do \\
+  echo \$m; \\
+  curl -H "authorization: Bearer $jwt" -X \$m "$proxy_root/logout"; \\
+  echo; \\
+done
 
 
 
@@ -19,19 +23,28 @@ curl:
 0xa5:
 
 
+
+Register john:
+curl -X POST -H 'content-type: application/json' \\
+  --data-binary '{"username":"john","password":"doe"}' \\
+  $root/api/register
+
 No protection:
+curl -H "authorization: Bearer $jwt" \\
+  -X DELETE "$root/api/user/john"
 
-curl -X POST -H 'content-type: application/json' --data-binary '{"username":"john","password":"doe"}' -L $root/api/register
-curl -H "authorization: Bearer $jwt" -X DELETE "$root/api/user/john"
 
+
+Register john:
+curl -X POST -H 'content-type: application/json' \\
+  --data-binary '{"username":"john","password":"doe"}' \\
+  $root/api/register
 
 With protection:
-
-curl -X POST -H 'content-type: application/json' --data-binary '{"username":"john","password":"doe"}' -L $root/api/register
-curl -v -H "authorization: Bearer $jwt" -X DELETE "$proxy_root/api/user/john"
-
+curl -v -H "authorization: Bearer $jwt" \\
+  -X DELETE "$proxy_root/api/user/john"
 
 
-xEOF
+EOF
 
 haproxy_start

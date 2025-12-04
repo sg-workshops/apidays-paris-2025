@@ -2,7 +2,7 @@
 
 . ../common
 
-cat<<xEOF
+cat<<EOF
 
 browser: 
   $proxy_http
@@ -32,6 +32,6 @@ curl -v -H "authorization: Bearer $jwt" "$root/api/getNote?username=admin"
 With protection:
 curl -v -H "authorization: Bearer $jwt" "$proxy_root/api/getNote?username=admin"
 
-xEOF
+EOF
 
 haproxy_start

@@ -2,7 +2,7 @@
 
 . ../common
 
-cat<<xEOF
+cat<<EOF
 
 browser: 
   $proxy_root
@@ -13,35 +13,52 @@ curl:
 0xa3:
 
 
-Create User:
-curl -s -X DELETE -H "authorization: Bearer $jwt" $root/api/user/john
+Delete User John if exists:
+curl  -o /dev/null -s -X DELETE -H "authorization: Bearer $jwt" $root/api/user/john
 
 
 no protection:
-curl -v -X POST  -H 'content-type: application/json' --data-binary '{"username":"john","password":"doe","score":123456}' $root/api/register
+curl -v -X POST -H 'content-type: application/json' \\
+  --data-binary '{"username":"john","password":"doe","score":123456}' \\
+  $root/api/register
 
 Validate Flag (optional):
-curl -v -X POST  -H 'content-type: application/json' --data-binary  '{"username":"john","password":"doe"}' $root/api/login 2>&1 | grep Authorization | awk '{print \$4}'
-curl -s -X GET -H "authorization: Bearer XXX" $root/api/scores
+curl -v -X POST -H 'content-type: application/json' \\
+  --data-binary '{"username":"john","password":"doe"}' \\
+  $root/api/login 2>&1 \\
+    | grep Authorization \\
+    | sed 's/\r//g' \\
+    | awk '{print \$4}' \\
+    |  xargs -I{} \\
+  curl -v -X GET -H "authorization: Bearer {}" $root/api/scores \\
+  | jq
 
 
-Create user:
-curl -s -X DELETE -H "authorization: Bearer $jwt" $root/api/user/john
+Delete User John:
+curl -o /dev/null -s -X DELETE -H "authorization: Bearer $jwt" $root/api/user/john
 
 With protection:
-curl -v -X POST  -H 'content-type: application/json' --data-binary '{"username":"john","password":"doe","score":123456}' $proxy_root/api/register
+curl -v -X POST  -H 'content-type: application/json' \\
+   --data-binary '{"username":"john","password":"doe","score":123456}' \\
+   $proxy_root/api/register
 
 
 
 0xa9:
 
 No protection:
-curl -s -H "authorization: Bearer $jwt"  -X POST -H 'content-type: application/json' --data-binary '{"unreleased": 1}' $root/api/allChallenges | jq
+curl -s -H "authorization: Bearer $jwt" \\
+  -X POST -H 'content-type: application/json' \\
+  --data-binary '{"unreleased": 1}' \\
+  $root/api/allChallenges | jq
 
 With protection:
-curl -s -H "authorization: Bearer $jwt"  -X POST -H 'content-type: application/json' --data-binary '{"unreleased": 1}' $proxy_root/api/allChallenges
+curl -s -H "authorization: Bearer $jwt" \\
+  -X POST -H 'content-type: application/json' \\
+  --data-binary '{"unreleased": 1}' \\
+  $proxy_root/api/allChallenges
 
 
-xEOF
+EOF
 
 haproxy_start

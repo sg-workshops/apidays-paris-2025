@@ -2,7 +2,7 @@
 
 . ../common
 
-cat<<xEOF
+cat<<EOF
 
 browser: 
   $proxy_root
@@ -10,20 +10,23 @@ browser:
 
 curl:
 
+Regular JWT
 curl -v -H "authorization: Bearer $jwt" $proxy_root/api/user/$user
 
 
 0xa7:
 
+Invalid JWT
+
 
 No protection:
-curl -H 'authorization: Bearer Invalid=-JWT' $root/api/user/$user
+curl -H 'authorization: Bearer Invalid=-JWT' $root/api/user/$user | jq
 
 With protection:
 curl -v -H 'authorization: Bearer Invalid=-JWT' $proxy_root/api/user/$user
 
 
 
-xEOF
+EOF
 
 haproxy_start

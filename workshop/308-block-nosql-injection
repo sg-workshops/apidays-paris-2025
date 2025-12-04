@@ -2,7 +2,7 @@
 
 . ../common
 
-cat<<xEOF
+cat<<EOF
 
 browser: 
   $proxy_root
@@ -13,13 +13,17 @@ curl:
 0x10:
 
 No protection:
-curl -X POST -H 'content-type: application/json' --data-binary '{"username":"admin","password":{"\$ne":null}}' $root/api/login
+curl -X POST -H 'content-type: application/json' \\
+  --data-binary '{"username":"admin","password":{"\$ne":null}}' \\
+  $root/api/login
 
 With protection:
-curl -X POST -H 'content-type: application/json' --data-binary '{"username":"admin","password":{"\$ne":null}}' $proxy_root/api/login
+curl -X POST -H 'content-type: application/json' \\
+  --data-binary '{"username":"admin","password":{"\$ne":null}}' \\
+  $proxy_root/api/login
 
 
 
-xEOF
+EOF
 
 haproxy_start
