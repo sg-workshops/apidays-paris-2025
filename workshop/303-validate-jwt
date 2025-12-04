@@ -15,7 +15,11 @@ curl -v -H "authorization: Bearer $jwt" $proxy_root/api/user/$user
 
 0xa7:
 
+
+No protection:
 curl -H 'authorization: Bearer Invalid=-JWT' $root/api/user/$user
+
+With protection:
 curl -v -H 'authorization: Bearer Invalid=-JWT' $proxy_root/api/user/$user
 
 

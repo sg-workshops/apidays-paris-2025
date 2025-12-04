@@ -12,7 +12,12 @@ curl:
 
 0xa3:
 
+
+Create User:
 curl -s -X DELETE -H "authorization: Bearer $jwt" $root/api/user/john
+
+
+no protection:
 curl -v -X POST  -H 'content-type: application/json' --data-binary '{"username":"john","password":"doe","score":123456}' $root/api/register
 
 Validate Flag (optional):
@@ -20,16 +25,20 @@ curl -v -X POST  -H 'content-type: application/json' --data-binary  '{"username"
 curl -s -X GET -H "authorization: Bearer XXX" $root/api/scores
 
 
-
+Create user:
 curl -s -X DELETE -H "authorization: Bearer $jwt" $root/api/user/john
+
+With protection:
 curl -v -X POST  -H 'content-type: application/json' --data-binary '{"username":"john","password":"doe","score":123456}' $proxy_root/api/register
 
 
 
 0xa9:
 
+No protection:
 curl -s -H "authorization: Bearer $jwt"  -X POST -H 'content-type: application/json' --data-binary '{"unreleased": 1}' $root/api/allChallenges | jq
 
+With protection:
 curl -s -H "authorization: Bearer $jwt"  -X POST -H 'content-type: application/json' --data-binary '{"unreleased": 1}' $proxy_root/api/allChallenges
 
 
