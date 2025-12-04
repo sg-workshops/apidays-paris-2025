@@ -1,0 +1,15 @@
+/api/register
+/api/login
+/api/profile
+/api/user/{user}
+/api/profile/upload
+/logout
+/api/addNoteWithLink
+/api/getNote
+/api/addNote
+/api/flag/submit
+/api/allChallenges
+/api/getSolves
+/api/scores
+/api/addTicket
+/api/getticket

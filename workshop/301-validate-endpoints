@@ -1,0 +1,17 @@
+#!/bin/bash
+
+. ../common
+
+cat<<xEOF
+
+browser: 
+  $proxy_root
+
+
+curl:
+
+  for p in /user/user/admin /api/invalid /user/profile /api/user /api/logout /api/profile /logout; do curl -I  -H "authorization: Bearer $jwt" "$proxy_root\$p" ; done
+
+xEOF
+
+haproxy_start

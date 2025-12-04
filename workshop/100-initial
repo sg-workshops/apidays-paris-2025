@@ -1,0 +1,12 @@
+#!/bin/bash
+
+. ../common
+
+cat<<EOF
+
+browser: 
+  $proxy_root_http
+
+EOF
+
+haproxy_start

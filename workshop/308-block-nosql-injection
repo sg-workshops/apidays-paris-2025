@@ -1,0 +1,23 @@
+#!/bin/bash
+
+. ../common
+
+cat<<xEOF
+
+browser: 
+  $proxy_root
+
+
+curl:
+
+0x10:
+
+curl -X POST -H 'content-type: application/json' --data-binary '{"username":"admin","password":{"\$ne":null}}' $root/api/login
+
+curl -X POST -H 'content-type: application/json' --data-binary '{"username":"admin","password":{"\$ne":null}}' $proxy_root/api/login
+
+
+
+xEOF
+
+haproxy_start

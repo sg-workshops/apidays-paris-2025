@@ -1,0 +1,25 @@
+#!/bin/bash
+
+. ../common
+
+cat<<xEOF
+
+browser: 
+  $proxy_root
+
+
+curl:
+
+curl -v -H "authorization: Bearer $jwt" $proxy_root/api/user/$user
+
+
+0xa7:
+
+curl -H 'authorization: Bearer Invalid=-JWT' $root/api/user/$user
+curl -v -H 'authorization: Bearer Invalid=-JWT' $proxy_root/api/user/$user
+
+
+
+xEOF
+
+haproxy_start

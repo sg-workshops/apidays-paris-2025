@@ -1,0 +1,21 @@
+# Configure the workshop
+
+
+# IP address to join your proxy. If not set, the first available IP
+# address on the system will be used.
+#
+#ip=192.0.2.10
+
+# URL used to join the proxy. If you don't have the domain, you can
+# update your /etc/hosts file.
+#
+proxy_root=https://api.example.com
+
+# Username when creating the access to the dvapi interface. The
+# password will be the same as the username.
+#
+user=dave
+
+# You shouldn't change anything below.
+proxy_root_http=$(echo $proxy_root | sed 's/https/http/')
+root=http://127.0.10.1:3000

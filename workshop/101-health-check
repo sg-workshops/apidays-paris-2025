@@ -1,0 +1,19 @@
+#!/bin/bash
+
+. ../common
+
+cat<<EOF
+
+browser: 
+  $proxy_root_http/
+  $proxy_root_http:8000/haproxy/
+
+login: admin / haproxy
+
+curl:
+
+  curl $proxy_root_http:8000/metrics
+
+EOF
+
+haproxy_start

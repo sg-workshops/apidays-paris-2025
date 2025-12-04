@@ -1,0 +1,29 @@
+#!/bin/bash
+
+. ../common
+
+cat<<xEOF
+
+browser: 
+  $proxy_http
+
+
+curl:
+
+jwt decode "$jwt"
+curl -v -H "authorization: Bearer $jwt" $proxy_root/api/user/$user
+
+0xa2:
+
+jwt decode "$admin_jwt"
+curl -v -H "authorization: Bearer $admin_jwt" $root/api/user/$user
+curl -v -H "authorization: Bearer $admin_jwt" $proxy_root/api/user/$user
+
+
+0xa1:
+curl -v -H "authorization: Bearer $jwt" "$root/api/getNote?username=admin"
+curl -v -H "authorization: Bearer $jwt" "$proxy_root/api/getNote?username=admin"
+
+xEOF
+
+haproxy_start

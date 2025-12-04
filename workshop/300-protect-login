@@ -1,0 +1,22 @@
+#!/bin/bash
+
+. ../common
+
+cat<<EOF
+
+browser: 
+  $proxy_root
+
+
+curl:
+
+cd $(dirname $(readlink -f $0))
+for i in \$(seq 5); do curl  -X POST -H "Content-Type: application/json" --data-binary "{\"username\":\"admin\",\"password\":\"admin\$i\"}"  $proxy_root/api/login; echo; sudo socat - ./haproxy.sock  <<<"show table mypeers/per_src_brute_force";  done
+
+
+for i in \$(seq 5); do curl  -X POST -H "Content-Type: application/json" --data-binary "{\"username\":\"admin\",\"password\":\"admin\$i\"}"  $proxy_root/api/login; echo; done
+
+
+EOF
+
+haproxy_start

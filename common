@@ -1,0 +1,28 @@
+# Common fonction to startup haproxy for demo environment
+
+haproxy="/usr/sbin/haproxy"
+ip=$(ip -br  -4 -o addr show scope global | awk '{print $3}' | head -n 1 | cut -d/ -f1)
+if test -e ../conf; then
+  . ../conf
+fi
+
+if test -e ../solutions/site.cfg; then
+  . ../solutions/site.cfg
+fi
+
+function haproxy_start() {
+  conf=$(basename $0).cfg
+  haproxy_stop
+  declare -f haproxy_pre_up > /dev/null && haproxy_pre_up
+  echo "Starting HAProxy: $haproxy -f $conf"
+  ip=$ip sudo -E  $haproxy -L apidays -W -S unix@./master.sock -f ../_common/global.cfg -f $conf
+  haproxy_stop
+}
+
+function haproxy_stop() {
+  declare -f haproxy_pre_down > /dev/null && haproxy_pre_down
+  sudo killall $(basename $haproxy) > /dev/null 2>&1
+  sudo rm -f haproxy.sock > /dev/null 2>&1
+  sudo rm -f master.sock > /dev/null 2>&1
+  declare -f haproxy_post_down > /dev/null && haproxy_post_down
+}

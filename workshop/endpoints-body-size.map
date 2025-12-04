@@ -1,0 +1,15 @@
+/api/register              POST;5120
+/api/login                 POST;5120
+/api/profile               POST,GET;5120
+/api/user/{user}           GET;0
+/api/profile/upload        POST;1048576
+/logout                    GET;0
+/api/addNoteWithLink       POST;5120
+/api/getNote               GET;0
+/api/addNote               POST;10240
+/api/flag/submit           POST;5120
+/api/allChallenges         POST;5120
+/api/getSolves             GET;0
+/api/scores                GET;0
+/api/addTicket             POST;51200
+/api/getticket             POST;5120

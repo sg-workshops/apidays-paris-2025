@@ -1,0 +1,28 @@
+#!/bin/bash
+
+. ../common
+
+cat<<xEOF
+
+browser: 
+  $proxy_root
+
+
+curl:
+
+    for m in GET POST PUT OPTIONS HEAD DELETE PATCH; do echo \$m; curl -H "authorization: Bearer $jwt" -X \$m "$proxy_root/logout"; echo ; done
+
+0xa5:
+
+curl -X POST -H 'content-type: application/json' --data-binary '{"username":"john","password":"doe"}' -L $root/api/register
+curl -H "authorization: Bearer $jwt" -X DELETE "$root/api/user/john"
+
+
+curl -X POST -H 'content-type: application/json' --data-binary '{"username":"john","password":"doe"}' -L $root/api/register
+curl -v -H "authorization: Bearer $jwt" -X DELETE "$proxy_root/api/user/john"
+
+
+
+xEOF
+
+haproxy_start

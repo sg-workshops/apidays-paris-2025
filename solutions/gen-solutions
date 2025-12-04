@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if test -e ../conf; then
+  . ../conf
+fi
+
+
+curl -s -X POST  -H 'content-type: application/json' --data-binary "{\"username\":\"$user\",\"password\":\"$user\"}" -L $root/api/register 2>&1 > /dev/null 
+
+
+id=$(docker exec -it  mongodb  mongoexport --db dvapi  --collection users --quiet --fields _id,username  | jq  -rs ".[] | select(.username==\"$user\") | ._id.\"\$oid\"")
+iat=$(date +%s)
+jwt=$(jwt encode --secret secret123 "{\"iat\":$iat,\"isAdmin\":\"false\",\"userId\":\"$id\",\"username\":\"$user\"}")
+admin_jwt=$(jwt encode --secret secret123 "{\"iat\":$iat,\"isAdmin\":\"true\",\"userId\":\"$id\",\"username\":\"$user\"}")
+
+
+
+sed \
+  -e "s/@@IAT@@/$iat/g" \
+  -e "s#@@USER@@#$user#g" \
+  -e "s#@@ID@@#$id#g" \
+  -e "s#@@JWT@@#$jwt#g" \
+  -e "s#@@ADMIN_JWT@@#$admin_jwt#g" \
+  -e "s#@@ROOT@@#$root#g" \
+  < solutions.in > solutions.md
+
+cat <<EOF > site.cfg
+jwt="$jwt"
+admin_jwt="$admin_jwt"
+user="$user"
+EOF

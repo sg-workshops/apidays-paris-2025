@@ -1,0 +1,21 @@
+#!/bin/bash
+
+. ../common
+
+cat<<xEOF
+
+browser: 
+  $proxy_root
+
+
+curl:
+
+curl -X POST -H "authorization: Bearer $jwt"  -H 'content-type: application/json' --data-binary '{"url":"http://127.0.0.1:8443"}' $root/api/AddNoteWithLink
+
+curl -v -X POST -H "authorization: Bearer $jwt"  -H 'content-type: application/json' --data-binary '{"url":"http://127.0.0.1:8443"}' $proxy_root/api/AddNoteWithLink
+
+
+
+xEOF
+
+haproxy_start

@@ -1,0 +1,49 @@
+#!/usr/bin/bash
+
+# This script sets up demo env for Apidays 2025
+#
+# Run as root.
+
+
+# HAProxy
+# See https://haproxy.debian.net/#distribution=Ubuntu&release=noble&version=3.2
+
+
+#apt-get install --no-install-recommends software-properties-common
+if ! test -e /etc/apt/sources.list.d/vbernat-ubuntu-haproxy-3_2-noble.sources; then
+  sudo add-apt-repository -y ppa:vbernat/haproxy-3.2
+fi
+
+DEBIAN_FRONTEND=noninteractive sudo -E apt-get install -y haproxy docker-compose-v2 socat
+
+# Add current user to docker group
+if ! id -nG "$USER" | grep -qw docker; then
+  sudo usermod -aG docker "$USER"
+fi
+
+# install jwt manipulation tool
+if ! test -e /usr/local/bin/jwt; then
+  curl -L  https://github.com/mike-engel/jwt-cli/releases/download/6.2.0/jwt-linux.tar.gz | sudo tar -C /usr/local/bin -xzf -
+fi
+
+
+# install dwapi
+if ! test -d dvapi; then
+  git clone https://github.com/payatu/DVAPI.git dvapi
+  cat <<'EOF' | patch -p1 -d dvapi
+diff --git a/docker-compose.yml b/docker-compose.yml
+index a2fc006..a06d7c9 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -7,7 +7,8 @@ services:
+     build: .
+     restart: always
+     ports:
+-      - 3000:3000
++      - 127.0.10.1:3000:3000
++      - 127.0.10.2:3000:3000
+     depends_on:
+       - mongodb
+EOF
+  ./dvapi.sh
+fi

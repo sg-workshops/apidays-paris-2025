@@ -1,0 +1,20 @@
+#!/bin/bash
+
+. ../common
+
+cat<<EOF
+
+browser: 
+  $proxy_root
+
+
+curl:
+
+0xa4:
+
+curl -v -H "authorization: Bearer $jwt" -X POST -F "file=@../large-picture.jpg" $root/api/profile/upload
+curl -v -H "authorization: Bearer $jwt" -X POST -F "file=@../large-picture.jpg" $proxy_root/api/profile/upload
+
+EOF
+
+haproxy_start
