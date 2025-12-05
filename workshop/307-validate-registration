@@ -23,7 +23,7 @@ curl -w '\n' -D - -X POST -H 'content-type: application/json' \\
   $root/api/register
 
 Validate Flag (optional):
-curl -X POST -H 'content-type: application/json' \\
+curl -X POST -v -H 'content-type: application/json' \\
   --data-binary '{"username":"john","password":"doe"}' \\
   $root/api/login 2>&1 \\
     | grep Authorization \\

@@ -29,7 +29,7 @@ Clean up:
 docker  exec -it  mongodb mongosh dvapi --eval  'db.tickets.deleteMany({});'
 
 With protection:
-for i in \$(seq 161); do \\
+for i in \$(seq 10); do \\
   echo -n "\$i "; \\
   curl -w '\n' -s -H 'authorization: Bearer $jwt' \\
     -X POST -H 'content-type: application/json' \\

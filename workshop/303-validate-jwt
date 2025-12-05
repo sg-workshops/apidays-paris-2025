@@ -20,7 +20,7 @@ Invalid JWT
 
 
 No protection:
-curl -w '\n' -D - -H 'authorization: Bearer Invalid=-JWT' $root/api/user/$user | jq
+curl -w '\n' -s -D /dev/stderr -H 'authorization: Bearer Invalid=-JWT' $root/api/user/$user | jq
 
 With protection:
 curl -w '\n' -D - -H 'authorization: Bearer Invalid=-JWT' $proxy_root/api/user/$user
