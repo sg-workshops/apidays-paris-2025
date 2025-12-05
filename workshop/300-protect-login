@@ -16,7 +16,7 @@ Display stick table:
 
 cd $(dirname $(readlink -f $0))
 for i in \$(seq 5); do \\
-  curl  -X POST -H "Content-Type: application/json" \\
+  curl -w '\n' -X POST -H "Content-Type: application/json" \\
     --data-binary "{\"username\":\"admin\",\"password\":\"admin\$i\"}"  \\
     $proxy_root/api/login; \\
    echo; \\
@@ -27,7 +27,7 @@ done
 Brute force:
 
 for i in \$(seq 5); do \\
-  curl  -X POST -H "Content-Type: application/json" \\
+  curl -w '\n' -X POST -H "Content-Type: application/json" \\
      --data-binary "{\"username\":\"admin\",\"password\":\"admin\$i\"}" \\
      $proxy_root/api/login; \\
    echo; \\
