@@ -15,11 +15,11 @@ curl:
 0xa4:
 
 No protection:
-curl -v -H "authorization: Bearer $jwt" -X POST -F "file=@$img_root/large-picture.jpg" $root/api/profile/upload
+curl -w '\n' -D - -H "authorization: Bearer $jwt" -X POST -F "file=@$img_root/large-picture.jpg" $root/api/profile/upload
 
 
 With protection:
-curl -v -H "authorization: Bearer $jwt" -X POST -F "file=@$img_root/large-picture.jpg" $proxy_root/api/profile/upload
+curl -w '\n' -D - -H "authorization: Bearer $jwt" -X POST -F "file=@$img_root/large-picture.jpg" $proxy_root/api/profile/upload
 
 EOF
 

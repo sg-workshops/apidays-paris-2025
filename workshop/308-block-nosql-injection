@@ -13,12 +13,12 @@ curl:
 0x10:
 
 No protection:
-curl -X POST -H 'content-type: application/json' \\
+curl -w '\n' -D - -X POST -H 'content-type: application/json' \\
   --data-binary '{"username":"admin","password":{"\$ne":null}}' \\
   $root/api/login
 
 With protection:
-curl -X POST -H 'content-type: application/json' \\
+curl -w '\n' -D - -X POST -H 'content-type: application/json' \\
   --data-binary '{"username":"admin","password":{"\$ne":null}}' \\
   $proxy_root/api/login
 

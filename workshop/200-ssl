@@ -8,7 +8,7 @@ browser:
   $proxy_root_http
 
 curl:
-  curl -v $proxy_root_http
+  curl -w '\n' -D - $proxy_root_http
 
 EOF
 

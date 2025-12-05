@@ -14,23 +14,23 @@ curl:
 
 
 Delete User John if exists:
-curl  -o /dev/null -s -X DELETE -H "authorization: Bearer $jwt" $root/api/user/john
+curl -o /dev/null -s -X DELETE -H "authorization: Bearer $jwt" $root/api/user/john
 
 
 no protection:
-curl -v -X POST -H 'content-type: application/json' \\
+curl -w '\n' -D - -X POST -H 'content-type: application/json' \\
   --data-binary '{"username":"john","password":"doe","score":123456}' \\
   $root/api/register
 
 Validate Flag (optional):
-curl -v -X POST -H 'content-type: application/json' \\
+curl -X POST -v -H 'content-type: application/json' \\
   --data-binary '{"username":"john","password":"doe"}' \\
   $root/api/login 2>&1 \\
     | grep Authorization \\
     | sed 's/\r//g' \\
     | awk '{print \$4}' \\
     |  xargs -I{} \\
-  curl -v -X GET -H "authorization: Bearer {}" $root/api/scores \\
+  curl -X GET -s -H "authorization: Bearer {}" $root/api/scores \\
   | jq
 
 
@@ -38,7 +38,7 @@ Delete User John:
 curl -o /dev/null -s -X DELETE -H "authorization: Bearer $jwt" $root/api/user/john
 
 With protection:
-curl -v -X POST  -H 'content-type: application/json' \\
+curl -w '\n' -D - -X POST  -H 'content-type: application/json' \\
    --data-binary '{"username":"john","password":"doe","score":123456}' \\
    $proxy_root/api/register
 
@@ -53,7 +53,7 @@ curl -s -H "authorization: Bearer $jwt" \\
   $root/api/allChallenges | jq
 
 With protection:
-curl -s -H "authorization: Bearer $jwt" \\
+curl -w '\n' -D - -s -H "authorization: Bearer $jwt" \\
   -X POST -H 'content-type: application/json' \\
   --data-binary '{"unreleased": 1}' \\
   $proxy_root/api/allChallenges

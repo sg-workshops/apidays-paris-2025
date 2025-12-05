@@ -11,8 +11,8 @@ browser:
 curl:
 
 for m in GET POST PUT OPTIONS HEAD DELETE PATCH; do \\
-  echo \$m; \\
-  curl -H "authorization: Bearer $jwt" -X \$m "$proxy_root/logout"; \\
+  echo "-> \$m"; \\
+  curl  -w '\n' -D - -H "authorization: Bearer $jwt" -X \$m "$proxy_root/logout"; \\
   echo; \\
 done
 
@@ -23,25 +23,28 @@ done
 0xa5:
 
 
+Check methods:
+curl -w '\n' -X OPTIONS "$root/api/user/john"
+
 
 Register john:
-curl -X POST -H 'content-type: application/json' \\
+curl -w '\n' -X POST -H 'content-type: application/json' \\
   --data-binary '{"username":"john","password":"doe"}' \\
   $root/api/register
 
 No protection:
-curl -H "authorization: Bearer $jwt" \\
+curl -w '\n' -D - -H "authorization: Bearer $jwt" \\
   -X DELETE "$root/api/user/john"
 
 
 
 Register john:
-curl -X POST -H 'content-type: application/json' \\
+curl -w '\n' -X POST -H 'content-type: application/json' \\
   --data-binary '{"username":"john","password":"doe"}' \\
   $root/api/register
 
 With protection:
-curl -v -H "authorization: Bearer $jwt" \\
+curl -w '\n' -D - -H "authorization: Bearer $jwt" \\
   -X DELETE "$proxy_root/api/user/john"
 
 

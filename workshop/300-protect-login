@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 . ../common
@@ -16,18 +15,18 @@ Display stick table:
 
 cd $(dirname $(readlink -f $0))
 for i in \$(seq 5); do \\
-  curl  -X POST -H "Content-Type: application/json" \\
+  curl -w '\n' -D - -X POST -H "Content-Type: application/json" \\
     --data-binary "{\"username\":\"admin\",\"password\":\"admin\$i\"}"  \\
     $proxy_root/api/login; \\
-   echo; \\
    sudo socat - ./haproxy.sock  <<<"show table mypeers/per_src_brute_force"; \\
+   echo; \\
 done
 
 
 Brute force:
 
 for i in \$(seq 5); do \\
-  curl  -X POST -H "Content-Type: application/json" \\
+  curl -w '\n' -D - -X POST -H "Content-Type: application/json" \\
      --data-binary "{\"username\":\"admin\",\"password\":\"admin\$i\"}" \\
      $proxy_root/api/login; \\
    echo; \\

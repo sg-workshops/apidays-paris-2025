@@ -11,13 +11,13 @@ browser:
 curl:
 
 No protection:
-curl -X POST -H "authorization: Bearer $jwt" \\
+curl -w '\n' -D - -X POST -H "authorization: Bearer $jwt" \\
   -H 'content-type: application/json' \\
   --data-binary '{"url":"http://127.0.0.1:8443"}' \\
   $root/api/AddNoteWithLink
 
 With protection:
-curl -v -X POST -H "authorization: Bearer $jwt" \\
+curl -w '\n' -D - -X POST -H "authorization: Bearer $jwt" \\
   -H 'content-type: application/json' \\
   --data-binary '{"url":"http://127.0.0.1:8443"}' \\
   $proxy_root/api/AddNoteWithLink

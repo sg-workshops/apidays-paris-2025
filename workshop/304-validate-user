@@ -11,26 +11,26 @@ browser:
 curl:
 
 jwt decode "$jwt"
-curl -v -H "authorization: Bearer $jwt" $proxy_root/api/user/$user
+curl -w '\n' -D - -H "authorization: Bearer $jwt" $proxy_root/api/user/$user
 
 0xa2:
 
 jwt decode "$admin_jwt"
 
 No protection:
-curl -v -H "authorization: Bearer $admin_jwt" $root/api/user/$user
+curl -w '\n' -D - -H "authorization: Bearer $admin_jwt" $root/api/user/$user
 
 With protection:
-curl -v -H "authorization: Bearer $admin_jwt" $proxy_root/api/user/$user
+curl -w '\n' -D - -H "authorization: Bearer $admin_jwt" $proxy_root/api/user/$user
 
 
 0xa1:
 
 No protection:
-curl -v -H "authorization: Bearer $jwt" "$root/api/getNote?username=admin"
+curl -w '\n' -D - -H "authorization: Bearer $jwt" "$root/api/getNote?username=admin"
 
 With protection:
-curl -v -H "authorization: Bearer $jwt" "$proxy_root/api/getNote?username=admin"
+curl -w '\n' -D - -H "authorization: Bearer $jwt" "$proxy_root/api/getNote?username=admin"
 
 EOF
 

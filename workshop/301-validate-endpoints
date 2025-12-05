@@ -18,7 +18,8 @@ for p in \\
   /api/logout \\
   /api/profile \\
   /logout; do \\
-    curl -I \\
+    echo "-> \$p"; \\
+    curl -w '\n' -D - -s -o /dev/null \\
        -H "authorization: Bearer $jwt" \\
       "$proxy_root\$p"; \\
 done
