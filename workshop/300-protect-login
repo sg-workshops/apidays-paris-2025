@@ -23,14 +23,23 @@ for i in \$(seq 5); do \\
 done
 
 
-Brute force:
+without protection:
 
+for i in \$(seq 50); do \\
+  curl -w '\n'  -X POST -H "Content-Type: application/json" \\
+     --data-binary "{\"username\":\"admin\",\"password\":\"admin\$i\"}" \\
+     $root/api/login; \\
+done
+
+
+with protection:
 for i in \$(seq 5); do \\
   curl -w '\n' -D - -X POST -H "Content-Type: application/json" \\
      --data-binary "{\"username\":\"admin\",\"password\":\"admin\$i\"}" \\
      $proxy_root/api/login; \\
    echo; \\
 done
+
 
 
 EOF

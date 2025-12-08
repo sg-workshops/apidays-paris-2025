@@ -10,6 +10,23 @@ browser:
 
 curl:
 
+without protection:
+for p in \\
+  /user/user/admin \\
+  /api/invalid \\
+  /user/profile \\
+  /api/user \\
+  /api/logout \\
+  /api/profile \\
+  /logout; do \\
+    echo "-> \$p"; \\
+    curl -w '\n' -D - -s -o /dev/null \\
+       -H "authorization: Bearer $jwt" \\
+      "$root\$p"; \\
+done
+
+
+with protection:
 for p in \\
   /user/user/admin \\
   /api/invalid \\
@@ -23,6 +40,7 @@ for p in \\
        -H "authorization: Bearer $jwt" \\
       "$proxy_root\$p"; \\
 done
+
 
 EOF
 
